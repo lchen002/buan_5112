@@ -16,14 +16,16 @@ ggplot(data = nfhs) +
   xlab("Household Size")
 
 #create a new data frame that contains only urban households
-urban <- filter(nfhs, hv025 == 1)
+#factor hv026 into categorical values
+urban <- filter(nfhs, hv025 == 1) 
+hv026_factored <- factor(urban$hv026, levels = unique(urban$hv026))
 
 #boxplot of distribution of household size by type of urban area
 ggplot(data = urban) +
-  geom_boxplot(mapping = aes(x = hv009, y = hv025, group = hv026)) +
-  coord_flip() +
-  xlab("Household Size") +
-  ylab("Urban Area Type")
+  geom_boxplot(mapping = aes(x = hv026_factored, y = hv009)) +
+  xlab("Urban Area Type") +
+  ylab("Household Size") +
+  scale_x_discrete(labels = c("Large city", "Small City", "Town"))
 
 #find mean of household size by type of urban area
 urban %>%
